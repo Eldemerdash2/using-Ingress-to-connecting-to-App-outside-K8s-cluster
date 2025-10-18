@@ -1,13 +1,5 @@
 # 🧭 Ingress – Connecting to Applications Outside a Kubernetes Cluster
 
-![Kubernetes](https://img.shields.io/badge/Kubernetes-v1.29-blue?logo=kubernetes&logoColor=white)
-![Ingress](https://img.shields.io/badge/Ingress-Controller-brightgreen?logo=nginx)
-![License](https://img.shields.io/badge/License-MIT-yellow)
-![Platform](https://img.shields.io/badge/Platform-Minikube-orange?logo=minikube)
-![Status](https://img.shields.io/badge/Status-Active-success)
-
-> Learn how to expose your internal Kubernetes services securely using **Ingress**, configure HTTPS, and route traffic via domain names.
-
 ---
 
 ## 🧠 Overview
@@ -52,56 +44,9 @@ Instead of relying on `NodePort` or `LoadBalancer`, Ingress allows clean, domain
 | **External (LoadBalancer / NodePort)** | Opens the app publicly using node IP and port – quick but insecure. | `http://NodeIP:30000` |
 | **Internal (ClusterIP)** | Used behind Ingress for secure internal routing. | Access via domain (e.g., `myapp.com`) |
 
----
-
-### 🔸 2. Ingress Resource Example
-
-```yaml
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: dashboard-ingress
-  namespace: kubernetes-dashboard
-spec:
-  rules:
-  - host: dashboard.com
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: kubernetes-dashboard
-            port:
-              number: 80
-```
-
-🧩 This rule forwards all traffic from `dashboard.com` to the **Kubernetes Dashboard service**.
 
 ---
 
-## 🚀 Setting Up Ingress in Minikube
-
-### ▶️ Enable Ingress Controller
-```bash
-minikube addons enable ingress
-```
-
-### 🛠️ Start a Tunnel
-```bash
-minikube tunnel
-```
-
-### 🧾 Map Local Hostname
-```bash
-sudo nano /etc/hosts
-# Add this line:
-127.0.0.1   dashboard.com
-```
-
-Now open your browser → **[http://dashboard.com](http://dashboard.com)** 🎉
-
----
 
 ## 🔒 Enabling HTTPS (TLS)
 
@@ -131,40 +76,6 @@ spec:
 
 🔐 Done! Your application now supports **HTTPS connections**.
 
----
-
-## 🧩 Advanced Use Cases
-
-### 🔹 Multiple Paths (Same Domain)
-```yaml
-- host: myapp.com
-  http:
-    paths:
-    - path: /analytics → analytics-service
-    - path: /shop      → shop-service
-```
-📊 One domain → Multiple paths → Different apps.
-
----
-
-### 🔹 Multiple Subdomains
-```yaml
-- host: analytics.myapp.com → analytics-service
-- host: shop.myapp.com      → shop-service
-```
-🏷️ Use **subdomains** instead of path routing.
-
----
-
-### 🔹 Default Backend
-Define a **fallback service** for unmapped requests (custom 404/error page).
-```yaml
-defaultBackend:
-  service:
-    name: error-page
-    port:
-      number: 80
-```
 
 ---
 
@@ -185,7 +96,7 @@ defaultBackend:
 | 2️⃣ | `minikube addons enable ingress` | Enable ingress addon |
 | 3️⃣ | `minikube dashboard` | Launch the Kubernetes dashboard |
 | 4️⃣ | `kubectl apply -f dashboard-ingress.yaml` | Create ingress rule |
-| 5️⃣ | `echo "127.0.0.1 dashboard.com" | sudo tee -a /etc/hosts` | Map hostname |
+| 5️⃣ | `add 127.0.0.1 dashboard.com in /etc/hosts" | map domain name dashboard.com to 127.0.0.1 in /etc/hosts |
 | 6️⃣ | `minikube tunnel` | Start the ingress tunnel |
 | ✅ | Visit [http://dashboard.com](http://dashboard.com) | Access your dashboard! |
 
@@ -215,7 +126,5 @@ defaultBackend:
 ## 👨‍💻 Author
 
 **Mohamed Eldemerdash**  
-🎓 *Kubernetes Learning Series – Lesson 130: Ingress: Connecting to Applications Outside the Cluster*  
+DevOps Engineer & Mechanical Engineer
 
-💬 *Learn. Build. Automate.*  
-🖋️ [GitHub Profile](https://github.com/) • 🌐 [Kubernetes Docs](https://kubernetes.io)
